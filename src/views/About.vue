@@ -1,5 +1,13 @@
-<template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
-</template>
+<!-- <template functional>
+    <div>函数、无状态组件</div>
+</template> -->
+
+<script>
+    export default {
+        functional: true,
+        props: {},
+        render(createElement, context) {
+            return createElement('div', '函数/无状态组件')
+        }
+    }
+</script>

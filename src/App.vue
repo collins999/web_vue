@@ -2,7 +2,13 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link to="/columns">Columns</router-link> |
+      <router-link to="/grid">Grid</router-link> |
+      <router-link to="/flex">Flex</router-link> |
+      <router-link to="/number/name">Number</router-link> |
+      <router-link to="/notification">Notification</router-link> |
+      <router-link to="/promise">Promise</router-link>
     </div>
     <router-view/>
   </div>
@@ -14,6 +20,7 @@
   -moz-osx-font-smoothing grayscale
   text-align center
   color #2c3e50
+  height 2000px
 
 #nav
   padding 30px
