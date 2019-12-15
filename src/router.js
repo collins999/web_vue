@@ -52,14 +52,19 @@ export default new Router({
             path: '/promise',
             name: 'promise',
             component: () => import( /* webpackChunkName: "promise" */ './views/Promise.vue')
+        },
+        ,
+        {
+            path: '/props',
+            name: 'props',
+            component: () => import( /* webpackChunkName: "props" */ './views/Props.vue')
         }
     ],
-    scrollBehavior(to, from, savedPosition) {
-        if (savedPosition) {
-            alert(1);
-            return savedPosition
-        } else {
-            return { x: 1000, y: 1000 }
-        }
-    }
+    // scrollBehavior(to, from, savedPosition) {
+    //     if (savedPosition) {
+    //         return savedPosition
+    //     } else {
+    //         return { x: 1000, y: 1000 }
+    //     }
+    // }
 })

@@ -5,9 +5,14 @@
 <script>
     export default {
         functional: true,
-        props: {},
+        props: {
+        	router: {
+        		type: Object
+        	}
+        },
         render(createElement, context) {
-            return createElement('div', '函数/无状态组件')
+        	console.log(context);
+        	return createElement(`h1`, '函数/无状态组件')
         }
     }
 </script>
