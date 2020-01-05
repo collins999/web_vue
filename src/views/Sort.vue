@@ -9,8 +9,8 @@ export default {
     },
     created() {
         let array = [];
-        for (let i = 0; i < 1000; i++) {
-            let number = Math.floor(Math.random() * 1000);
+        for (let i = 0; i < 10000; i++) {
+            let number = Math.floor(Math.random() * 10000);
             array.push(number);
         }
 
@@ -43,8 +43,12 @@ export default {
         console.time('希尔排序：');
         this.shellSort(array);
         console.timeEnd('希尔排序：');
+        
+        console.time('归并排序：');
+        this.mergeSort(array);
+        console.timeEnd('归并排序：');
 
-        // let res = this.shellSort(array);
+        // let res = this.mergeSort(array);
         // console.log(res);
     },
     methods: {
@@ -203,6 +207,40 @@ export default {
                 }
                 gap = parseInt(gap / 2);
             }
+        },
+        /**
+         * 归并排序
+         */
+        mergeSort(arr) {
+            let len = arr.length;
+            if (len < 2) {
+                return arr;
+            }
+            let middle = Math.floor(len / 2),
+                left = arr.slice(0, middle),
+                right = arr.slice(middle);
+            // console.log(`处理过程：`, arr);
+            return this.merge(this.mergeSort(left), this.mergeSort(right));
+        },
+        /**
+         * 归并排序辅助方法
+         */
+        merge(left, right) {
+            let result = [];
+            while (left.length && right.length) {
+                if (left[0] <= right[0]) {
+                    result.push(left.shift());
+                } else {
+                    result.push(right.shift());
+                }
+            }
+            while (left.length) {
+                result.push(left.shift());
+            }
+            while (right.length){
+                result.push(right.shift());
+            }
+            return result;
         }
     }
 }
