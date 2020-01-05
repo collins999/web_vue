@@ -15,7 +15,7 @@ export default new Router({
         {
             path: '/about',
             name: 'about',
-            component: () => import( /* webpackChunkName: "about" */ './views/About.vue')
+            component: () => import(/* webpackChunkName: "about" */'./views/About.vue')
         },
         {
             path: '/columns',
@@ -53,11 +53,14 @@ export default new Router({
             name: 'promise',
             component: () => import( /* webpackChunkName: "promise" */ './views/Promise.vue')
         },
-        ,
         {
-            path: '/props',
-            name: 'props',
+            path: '/props/:?',
             component: () => import( /* webpackChunkName: "props" */ './views/Props.vue')
+        },
+        {
+            path: '/sort',
+            name: 'props',
+            component: () => import( /* webpackChunkName: "sort" */ './views/Sort.vue')
         }
     ],
     // scrollBehavior(to, from, savedPosition) {

@@ -9,7 +9,8 @@
       <router-link to="/number/name">Number</router-link> |
       <router-link to="/notification">Notification</router-link> |
       <router-link to="/promise">Promise</router-link> |
-      <router-link to="/props">Props</router-link>
+      <router-link to="/props">Props</router-link> |
+      <router-link to="/sort">Sort</router-link>
     </div>
     <router-view></router-view>
   </div>

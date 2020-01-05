@@ -1,0 +1,29 @@
+/**
+ * 浏览器兼容性提醒
+ * 调用方式：在页面添加 <script src="//oa.fenqile.com/res/static/common/interceptIEBrowser/index.js"></script>
+ * 组件涉及文件：res/static/common/interceptIEBrowser/index.js
+ * @author oa团队
+ * @time 20190122
+ */
+
+(function() {
+    var userAgent = navigator.userAgent.toLowerCase(); //取得浏览器的userAgent字符串，并将其转为小写
+    if (userAgent.indexOf('msie') > -1 || userAgent.indexOf('trident') > -1) {
+        // 如果当前浏览器为ie，则需要显示提醒信息
+        document.body.innerHTML = 
+            '<div style="background-color: #366cb3;width: 100%;height: 100%;position: absolute;z-index: 10000;color: white;font-family: '+ "'Microsoft YaHei'" +'">' +
+                '<div style="position: absolute;left: 50%;top: 40%;transform: translate(-50%,-50%);text-align: center;">' +
+                    '<img src="//oa.fenqile.com/res/img/warning.png" width="100" height="100"/>' +
+                    '<div style="font-size: 20px; margin: 20px 0;">' +
+                        '当前系统不支持IE或IE内核浏览器，推荐使用谷歌浏览器进行访问' +
+                    '</div>' +
+                    '<div style="margin-top: 40px;">' +
+                        '<a target="_blank" href="https://pc.qq.com/search.html#!keyword=chrome" style="color: white;border: 3px solid white;padding: 10px;" onMouseOver="this.style.backgroundColor='+ "'white'" +';this.style.color='+ "'#366cb3'" +'" onMouseOut="this.style.backgroundColor=' + "'#366cb3'" + ';this.style.color='+ "'white'" +'">'+
+                            '下载谷歌浏览器' +
+                        '</a>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+    }
+    
+})();

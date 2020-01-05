@@ -1,0 +1,33 @@
+/**
+ * 全局js错误监控脚本
+ * 调用方式：在页面添加 <script src="//oa.fenqile.com/res/static/common/jserrormonitor/index.js"></script>
+ * 组件涉及文件：res/static/common/jserrormonitor/index.js、src/application/classes/Controller/Common/Jserrormonitor.php、src/application/views/common/jserrormonitor/detail.php
+ * @author oa团队
+ * @time 20171128
+ */
+
+(function() {
+    if (!window.onerror) {
+        window.onerror = function(error_message, error_script_url, line_number, column_number, error_object) {
+            let img = document.createElement('img');
+            img.src = '//oa.fenqile.com/common/jserrormonitor/upload.json?params=' + encodeURIComponent(JSON.stringify({
+                error_message: error_message,
+                error_script_url: error_script_url,
+                host: location.host,
+                href: location.href,
+                line_number: line_number,
+                column_number: column_number,
+                error_object: JSON.stringify(error_object),
+                user_agent: navigator.userAgent
+            })) + '&timestamp=' + new Date().getTime();
+        };
+    } else {
+        for (var i = 1; i <= 3; i++) {
+            (function(i) {
+                setTimeout(function() {
+                    console.info(i + '、window.onerror绑定冲突，请注意排查~');
+                }, 1000 * i);
+            })(i);
+        }
+    }
+})();
