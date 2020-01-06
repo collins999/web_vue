@@ -9,47 +9,59 @@ export default {
     },
     created() {
         let array = [];
-        for (let i = 0; i < 10000; i++) {
-            let number = Math.floor(Math.random() * 10000);
+        for (let i = 0; i < 10; i++) {
+            let number = Math.floor(Math.random() * 10);
             array.push(number);
         }
 
         console.log(array);
 
-        console.time('冒泡排序：');
-        this.bubbleSort(array);
-        console.timeEnd('冒泡排序：');
+        // console.time('冒泡排序：');
+        // this.bubbleSort(array);
+        // console.timeEnd('冒泡排序：');
 
-        console.time('单项冒泡排序：');
-        this.bubbleSortOne(array);
-        console.timeEnd('单项冒泡排序：');
+        // console.time('单项冒泡排序：');
+        // this.bubbleSortOne(array);
+        // console.timeEnd('单项冒泡排序：');
 
-        console.time('双向冒泡排序：');
-        this.bubbleSortTow(array);
-        console.timeEnd('双向冒泡排序：');
+        // console.time('双向冒泡排序：');
+        // this.bubbleSortTow(array);
+        // console.timeEnd('双向冒泡排序：');
 
-        console.time('选择排序：');
-        this.selectSort(array);
-        console.timeEnd('选择排序：');
+        // console.time('选择排序：');
+        // this.selectSort(array);
+        // console.timeEnd('选择排序：');
 
-        console.time('插入排序：');
-        this.insertSort(array);
-        console.timeEnd('插入排序：');
+        // console.time('插入排序：');
+        // this.insertSort(array);
+        // console.timeEnd('插入排序：');
 
-        console.time('拆半插入排序：');
-        this.binsertSort(array);
-        console.timeEnd('拆半插入排序：');
+        // console.time('拆半插入排序：');
+        // this.binsertSort(array);
+        // console.timeEnd('拆半插入排序：');
 
-        console.time('希尔排序：');
-        this.shellSort(array);
-        console.timeEnd('希尔排序：');
-        
-        console.time('归并排序：');
-        this.mergeSort(array);
-        console.timeEnd('归并排序：');
+        // console.time('希尔排序：');
+        // this.shellSort(array);
+        // console.timeEnd('希尔排序：');
 
-        // let res = this.mergeSort(array);
-        // console.log(res);
+        // console.time('归并排序：');
+        // this.mergeSort(array);
+        // console.timeEnd('归并排序：');
+
+        // console.time('快速排序1：');
+        // this.quickSort(array, 0, array.length - 1);
+        // console.timeEnd('快速排序1：');
+
+        // console.time('快速排序2：');
+        // this.quickSortOne(array, 0, array.length - 1);
+        // console.timeEnd('快速排序2：');
+
+        // console.time('堆排序：');
+        // this.heapSort(array);
+        // console.timeEnd('堆排序：');
+
+        let res = this.countingSort(array);
+        console.log(res);
     },
     methods: {
         /**
@@ -237,10 +249,135 @@ export default {
             while (left.length) {
                 result.push(left.shift());
             }
-            while (right.length){
+            while (right.length) {
                 result.push(right.shift());
             }
             return result;
+        },
+        /**
+         * 快速排序
+         */
+        quickSort(arr, begin, end) {
+            if (begin > end) return arr;
+            let temp = arr[begin],
+                i = begin,
+                j = end;
+            while (i != j) {
+                while (arr[j] >= temp && j > i) {
+                    j--;
+                }
+                while (arr[i] <= temp && j > i) {
+                    i++;
+                }
+                if (j > i) {
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+            }
+            [arr[begin], arr[i]] = [arr[i], temp];
+            // console.log(`${arr[i]}作为基准点：`, arr);
+            this.quickSort(arr, begin, i - 1);
+            this.quickSort(arr, i + 1, end);
+            return arr;
+        },
+        /**
+         * 快速排序
+         */
+        quickSortOne(arr, left, right) {
+            var len = arr.length,
+                partitionIndex,
+                left = typeof left != 'number' ? 0 : left,
+                right = typeof right != 'number' ? len - 1 : right;
+
+            if (left < right) {
+                partitionIndex = this.partition(arr, left, right);
+                // console.log(`${arr[partitionIndex]}作为基准点：`, arr);
+                this.quickSortOne(arr, left, partitionIndex - 1);
+                this.quickSortOne(arr, partitionIndex + 1, right);
+            }
+            return arr;
+        },
+        /**
+         * 快速排序辅助方法-寻找基准值
+         */
+        partition(arr, left, right) {
+            let pivot = left,
+                index = pivot + 1;
+            for (let i = index; i <= right; i++) {
+                if (arr[i] < arr[pivot]) {
+                    [arr[i], arr[index]] = [arr[index], arr[i]];
+                    index++;
+                }
+            }
+            [arr[pivot], arr[index - 1]] = [arr[index - 1], arr[pivot]];
+            return index - 1;
+        },
+        /**
+         * 堆排序
+         */
+        heapSort(nums) {
+            this.buildHeap(nums);
+            // 循环n-1次，每次循环后交换堆顶元素和堆底元素并重新调整堆结构
+            for (let i = nums.length - 1; i > 0; i--) {
+                [nums[i], nums[0]] = [nums[0], nums[i]];
+                this.adjustHeap(nums, 0, i);
+                // console.log(`${nums[i]}作为堆顶元素：`, nums);
+            }
+            return nums;
+        },
+        /**
+         * 堆排序辅助方法
+         */
+        adjustHeap(nums, index, size) {
+            // 交换后可能会破坏堆结构，需要循环使得每一个父节点都大于左右结点
+            while (true) {
+                let max = index;
+                let left = index * 2 + 1; // 左节点
+                let right = index * 2 + 2; // 右节点
+                if (left < size && nums[max] < nums[left]) max = left;
+                if (right < size && nums[max] < nums[right]) max = right;
+                // 如果左右结点大于当前的结点则交换，并再循环一遍判断交换后的左右结点位置是否破坏了堆结构（比左右结点小了）
+                if (index !== max) {
+                    [nums[index], nums[max]] = [nums[max], nums[index]];
+                    index = max;
+                } else {
+                    break;
+                }
+            }
+        },
+        /**
+         * 堆排序辅助方法
+         */
+        buildHeap(nums) {
+            // 注意这里的头节点是从0开始的，所以最后一个非叶子结点是 parseInt(nums.length/2)-1
+            let start = parseInt(nums.length / 2) - 1;
+            let size = nums.length;
+            // 从最后一个非叶子结点开始调整，直至堆顶。
+            for (let i = start; i >= 0; i--) {
+                this.adjustHeap(nums, i, size);
+            }
+        },
+        /**
+         * 计数排序
+         */
+        countingSort(nums) {
+            let arr = [];
+            let max = Math.max(...nums);
+            let min = Math.min(...nums);
+            // 装桶
+            for (let i = 0, len = nums.length; i < len; i++) {
+                let temp = nums[i];
+                arr[temp] = arr[temp] + 1 || 1;
+                console.log('装桶过程：', arr);
+            }
+            let index = 0;
+            // 还原原数组
+            for (let i = min; i <= max; i++) {
+                while (arr[i] > 0) {
+                    nums[index++] = i;
+                    arr[i]--;
+                }
+            }
+            return nums;
         }
     }
 }
