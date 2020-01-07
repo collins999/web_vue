@@ -9,61 +9,77 @@ export default {
     },
     created() {
         let array = [];
-        for (let i = 0; i < 10; i++) {
-            let number = Math.floor(Math.random() * 10);
+        for (let i = 0; i < 5000; i++) {
+            let number = Math.floor(Math.random() * 5000);
             array.push(number);
         }
-
         console.log(array);
 
-        // console.time('冒泡排序：');
-        // this.bubbleSort(array);
-        // console.timeEnd('冒泡排序：');
-
-        // console.time('单项冒泡排序：');
-        // this.bubbleSortOne(array);
-        // console.timeEnd('单项冒泡排序：');
-
-        // console.time('双向冒泡排序：');
-        // this.bubbleSortTow(array);
-        // console.timeEnd('双向冒泡排序：');
-
-        // console.time('选择排序：');
-        // this.selectSort(array);
-        // console.timeEnd('选择排序：');
-
-        // console.time('插入排序：');
-        // this.insertSort(array);
-        // console.timeEnd('插入排序：');
-
-        // console.time('拆半插入排序：');
-        // this.binsertSort(array);
-        // console.timeEnd('拆半插入排序：');
-
-        // console.time('希尔排序：');
-        // this.shellSort(array);
-        // console.timeEnd('希尔排序：');
-
-        // console.time('归并排序：');
-        // this.mergeSort(array);
-        // console.timeEnd('归并排序：');
-
-        // console.time('快速排序1：');
-        // this.quickSort(array, 0, array.length - 1);
-        // console.timeEnd('快速排序1：');
-
-        // console.time('快速排序2：');
-        // this.quickSortOne(array, 0, array.length - 1);
-        // console.timeEnd('快速排序2：');
-
-        // console.time('堆排序：');
-        // this.heapSort(array);
-        // console.timeEnd('堆排序：');
-
-        let res = this.countingSort(array);
-        console.log(res);
+        // let res = this.radixSort(array);
+        // console.log(res);
+        this.sortTime(array);
     },
     methods: {
+        /**
+         * 输出时间
+         */
+        sortTime(array) {
+            console.time('冒泡排序：');
+            this.bubbleSort(array);
+            console.timeEnd('冒泡排序：');
+
+            console.time('单项冒泡排序：');
+            this.bubbleSortOne(array);
+            console.timeEnd('单项冒泡排序：');
+
+            console.time('双向冒泡排序：');
+            this.bubbleSortTow(array);
+            console.timeEnd('双向冒泡排序：');
+
+            console.time('选择排序：');
+            this.selectSort(array);
+            console.timeEnd('选择排序：');
+
+            console.time('插入排序：');
+            this.insertSort(array);
+            console.timeEnd('插入排序：');
+
+            console.time('拆半插入排序：');
+            this.binsertSort(array);
+            console.timeEnd('拆半插入排序：');
+
+            console.time('希尔排序：');
+            this.shellSort(array);
+            console.timeEnd('希尔排序：');
+
+            console.time('归并排序：');
+            this.mergeSort(array);
+            console.timeEnd('归并排序：');
+
+            console.time('快速排序1：');
+            this.quickSort(array, 0, array.length - 1);
+            console.timeEnd('快速排序1：');
+
+            console.time('快速排序2：');
+            this.quickSortOne(array, 0, array.length - 1);
+            console.timeEnd('快速排序2：');
+
+            console.time('堆排序：');
+            this.heapSort(array);
+            console.timeEnd('堆排序：');
+
+            console.time('计数排序：');
+            this.countingSort(array);
+            console.timeEnd('计数排序：');
+
+            console.time('桶排序：');
+            this.bucketSort(array);
+            console.timeEnd('桶排序：');
+
+            // console.time('基数排序：');
+            // this.radixSort(array);
+            // console.timeEnd('基数排序：');
+        },
         /**
          * 冒泡排序
          */
@@ -367,7 +383,7 @@ export default {
             for (let i = 0, len = nums.length; i < len; i++) {
                 let temp = nums[i];
                 arr[temp] = arr[temp] + 1 || 1;
-                console.log('装桶过程：', arr);
+                // console.log(`装桶键为${temp}-值为${arr[temp]}`, arr);
             }
             let index = 0;
             // 还原原数组
@@ -377,6 +393,87 @@ export default {
                     arr[i]--;
                 }
             }
+            return nums;
+        },
+        /**
+         * 桶排序
+         */
+        bucketSort(nums) {
+            // 桶的个数，只要是正数即可
+            let num = 5;
+            let max = Math.max(...nums);
+            let min = Math.min(...nums);
+            // 计算每个桶存放的数值范围，至少为1，
+            let range = Math.ceil((max - min) / num) || 1;
+            // 创建二维数组，第一维表示第几个桶，第二维表示该桶里存放的数
+            let arr = Array.from(Array(num)).map(() => Array().fill(0));
+            nums.forEach(val => {
+                // 计算元素应该分布在哪个桶
+                let index = parseInt((val - min) / range);
+                // 防止index越界，例如当[5,1,1,2,0,0]时index会出现5
+                index = index >= num ? num - 1 : index;
+                let temp = arr[index];
+                // 插入排序，将元素有序插入到桶中
+                let j = temp.length - 1;
+                while (j >= 0 && val < temp[j]) {
+                    temp[j + 1] = temp[j];
+                    j--;
+                }
+                temp[j + 1] = val;
+                // console.log(temp);
+            });
+            // 修改回原数组
+            let res = [].concat.apply([], arr);
+            nums.forEach((val, i) => {
+                nums[i] = res[i];
+            });
+            return nums;
+        },
+        /**
+         * 基数排序
+         */
+        radixSort(nums) {
+            // 计算位数
+            function getDigits(n) {
+                let sum = 0;
+                while (n) {
+                    sum++;
+                    n = parseInt(n / 10);
+                }
+                return sum;
+            }
+            // 第一维表示位数即0-9，第二维表示里面存放的值
+            let arr = Array.from(Array(10)).map(() => Array());
+            let max = Math.max(...nums);
+            let maxDigits = getDigits(max);
+            for (let i = 0, len = nums.length; i < len; i++) {
+                // 用0把每一个数都填充成相同的位数
+                nums[i] = (nums[i] + '').padStart(maxDigits, 0);
+                // 先根据个位数把每一个数放到相应的桶里
+                let temp = nums[i][nums[i].length - 1];
+                arr[temp].push(nums[i]);
+            }
+            // console.table(arr);
+            // 循环判断每个位数
+            for (let i = maxDigits - 2; i >= 0; i--) {
+                // 循环每一个桶
+                for (let j = 0; j <= 9; j++) {
+                    let temp = arr[j]
+                    let len = temp.length;
+                    // 根据当前的位数i把桶里的数放到相应的桶里
+                    while (len--) {
+                        let str = temp[0];
+                        temp.shift();
+                        arr[str[i]].push(str);
+                    }
+                }
+            }
+            // console.table(arr);
+            // 修改回原数组
+            let res = [].concat.apply([], arr);
+            nums.forEach((val, index) => {
+                nums[index] = +res[index];
+            });
             return nums;
         }
     }
