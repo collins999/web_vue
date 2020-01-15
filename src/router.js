@@ -61,6 +61,11 @@ export default new Router({
             path: '/sort',
             name: 'props',
             component: () => import( /* webpackChunkName: "sort" */ './views/Sort.vue')
+        },
+        {
+            path: '/lazyLoadImg',
+            name: 'props',
+            component: () => import( /* webpackChunkName: "lazyLoadImg" */ './views/LazyLoadImg.vue')
         }
     ],
     // scrollBehavior(to, from, savedPosition) {
